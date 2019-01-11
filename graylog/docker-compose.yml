@@ -1,0 +1,36 @@
+version: '2'
+services:
+  mongodb:
+    image: mongo:3
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.12
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+  graylog:
+      image: graylog/graylog:2.4.0-1
+      environment:
+        - GRAYLOG_PASSWORD_SECRET=passwordpasswordpasswordpassword
+        - GRAYLOG_ROOT_PASSWORD_SHA2=d04e8d908c81e30da865f7b1fabce26d6026a0e57a0f35e96e9b9f14cbcf39d0
+        - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/api
+      links:
+        - mongodb:mongo
+        - elasticsearch
+      depends_on:
+        - mongodb
+        - elasticsearch
+      ports:
+        - 9000:9000
+        - 514:514
+        - 514:514/udp
+        - 5555:5555
+        - 12201:12201
+        - 12201:12201/udp

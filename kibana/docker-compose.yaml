@@ -1,0 +1,17 @@
+version: '2'
+services:
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.6.13
+    # volumes:
+    #   - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
+    environment:
+      SERVER_NAME: dev-kibana.fmarianocloud.org
+      ELASTICSEARCH_URL: http://daws-ore-elasticsearch-waf1.fmarianocloud.org:9200
+      XPACK_MONITORING_ENABLED: 'false'
+      XPACK_GRAPH_ENABLED: 'false'
+      XPACK_ML_ENABLED: 'false'
+      XPACK_REPORTING_ENABLED: 'false'
+      XPACK_SECURITY_ENABLED: 'false'
+      XPACK_WATCHER_ENABLED: 'false'
